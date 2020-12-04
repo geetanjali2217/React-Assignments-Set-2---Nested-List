@@ -1,28 +1,22 @@
-import React from "react";
-import Towns from "./towns";
+import React, { useState } from "react";
+import Town from "./Town";
 
-export default function Cities({ inputState, setInputState }) {
-  const handelCity = (index) => {
-    const inputStateCopy = { ...inputState };
-    inputStateCopy.towns = inputStateCopy.cities[index].towns;
-    inputStateCopy.isCityClicked = true;
-
-    setInputState(inputStateCopy);
-  };
-
+function City({ name, towns, index }) {
+  const [clicked, setClicked] = useState(false);
   return (
-    <>
-      {inputState.cities.map((city, index) => (
-        <div
-          key={city.name}
-          id={`city${index + 1}`}
-          onClick={() => handelCity(index)}
-        >
-          {city.name}
-        </div>
-      ))}
-      <br />
-      {inputState.isCityClicked && <Towns inputState={inputState} />}
-    </>
+    <li>
+      <h4 id={"city" + (index + 1)} onClick={() => setClicked(!clicked)}>
+        {name}
+      </h4>
+      {clicked ? (
+        <ul>
+          {towns.map((item) => (
+            <Town name={item.name} index={towns.indexOf(item)} />
+          ))}
+        </ul>
+      ) : null}
+    </li>
   );
 }
+
+export default City;
